@@ -1,0 +1,20 @@
+config PACKAGE_helloworld-plugin
+    tristate
+    select HELLOWORLD_PLUGIN
+
+if PACKAGE_helloworld-plugin
+
+menu "Select helloworld-plugin build options"
+    depends on PACKAGE_helloworld-plugin
+
+config HELLOWORLD_PLUGIN
+    bool "Build helloworld-plugin itself"
+    default y
+
+config HELLOWORLD_PLUGIN_ORDER
+    int "Start up order for the helloworld-plugin"
+    default 90
+
+endmenu
+
+endif

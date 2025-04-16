@@ -1,0 +1,19 @@
+%populate {
+    object HelloWorld{
+        parameter Enable=true;
+        object Message{
+            instance add (1){
+                parameter Enable=true;
+                parameter Interval=10;
+                parameter Author="oubeid";
+                parameter Alias="message_1";
+            }
+            instance add (2){
+                parameter Enable=true;
+                parameter Interval=5;
+                parameter Author="fehd";
+                parameter Alias="message_2";
+            }
+        }
+    }
+}

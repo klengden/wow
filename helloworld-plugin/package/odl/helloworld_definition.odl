@@ -1,0 +1,36 @@
+%define {
+    /*
+        HelloWorld data model example.
+
+        This example is mainly used to demonstrate some Ambiorix data model
+        features. 
+    */
+    %persistent object HelloWorld {
+        %persistent bool Enable{
+            default false;
+        }
+        bool delete_message_instance(%in string Alias);
+        bool add_message(%in string Author,
+                         %in uint32 Interval,
+                         %in bool Enable);
+        %persistent object Message[]{
+
+            %persistent bool Enable;
+            %persistent uint32 Interval;
+            %persistent string Author;
+            %unique %key string Alias;
+        }
+    }
+  
+}
+
+%populate {
+    on event "dm:object-changed" call helloworld_server_enable
+       filter 'path == "HelloWorld." and contains("parameters.Enable")';
+    on event "dm:object-changed" call message_instance_enable
+        filter 'path matches "HelloWorld\.Message\.[0-9]+\.$" && contains("parameters.Enable")';
+    on event "dm:object-changed" call update_message_instance_timer 
+        filter 'path matches "HelloWorld\.Message\.[0-9]+\.$" && contains("parameters.Interval")';
+
+   on event "*" call print_event;
+}
